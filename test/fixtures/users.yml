@@ -1,0 +1,51 @@
+michael:
+  first_name: Michael 
+  middle_name: middle
+  last_name: Example
+  email: michael@example.com
+  country: Australia
+  password_digest: <%= User.digest('password') %>
+  admin: true
+  activated: true
+  activated_at: <%= Time.zone.now %>
+
+archer:
+  first_name: Sterling
+  middle_name: middle
+  last_name: Archer
+  email: duchess@example.gov
+  country: Australia
+  password_digest: <%= User.digest('P@ssw0rd') %>
+  activated: true
+  activated_at: <%= Time.zone.now %>
+
+lana:
+  first_name: Lana 
+  middle_name: middle
+  last_name: Kane
+  email: hands@example.gov
+  country: Australia
+  password_digest: <%= User.digest('P@ssw0rd') %>
+  activated: true
+  activated_at: <%= Time.zone.now %>
+
+mallory:
+  first_name: Mallory
+  last_name: Archer
+  email: boss@example.gov
+  country: Australia
+  password_digest: <%= User.digest('P@ssw0rd') %>
+  activated: true
+  activated_at: <%= Time.zone.now %>
+
+
+<% 30.times do |n| %>
+user_<%= n %>:
+  first_name:  <%= "User #{n}" %>
+  last_name: <%= "User #{n}" %>
+  email: <%= "user-#{n}@example.com" %>
+  country: Australia
+  password_digest: <%= User.digest('P@ssw0rd') %>
+  activated: true
+  activated_at: <%= Time.zone.now %>
+<% end %>

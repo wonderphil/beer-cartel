@@ -1,0 +1,24 @@
+<div class="boxed">
+  <h2>Latest 5 Beers Reviews</h2>
+  <% @reviews = Review.order("created_at DESC").limit(5) %>
+  <% @reviews.each do |r| %>
+  	<div class="reviews">
+  		<li id="review-<%= r.id %>">
+		  <%= link_to gravatar_for(r.user, size: 50), r.user %>
+		  <span class="comment">
+		  	<b><%= r.beer.name %></b>
+		  	<% if r.comment.length < 100 %>
+		    	<p><%= h(r.comment).gsub(/\n/, '<br/>').html_safe %></p>
+		    <% else %>
+		    	<p><%= h(truncate(r.comment, :length => 100, :omission => "...")).gsub(/\n/, '<br/>').html_safe  %><%= link_to "See more", beer_path(r.beer.id) %></p>
+		    <% end %>
+		  </span>
+		  <div class="star-rating stars" data-score= <%= r.rating %>></div>
+		  <span class="timestamp">
+		    Posted by <%= r.user.first_name %>, <%= time_ago_in_words(r.created_at) %> ago.
+		    comment count <%= r.comment.length %>
+		  </span>
+		</li>
+  	</div>
+  <% end %>
+</div>

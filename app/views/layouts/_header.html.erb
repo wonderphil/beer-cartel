@@ -1,0 +1,57 @@
+<header class="navbar navbar-fixed-top navbar-inverse">
+  <div class="container">
+    <%= link_to "Beer Cartel", root_path, id: "logo" %>
+    <nav>
+      <ul class="nav navbar-nav navbar-right">
+      <%= form_tag search_beers_path, method: :get, class: "navbar-form navbar-left" do %>
+        <p>
+          <%= text_field_tag :search, params[:search], class: "btn form-control", placeholder: "Search for a Beer" %>
+          <%= submit_tag  "Search", name: nil, class: "btn btn-default" %>
+        </p>
+      <% end %>
+        <li><%= link_to "Home", root_path %></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              Beers <b class="caret"></b></a>
+          <ul class="dropdown-menu">
+              <li><%= link_to "List Beers", beers_path %></li>
+              <li><%= link_to "Add Beer", new_beer_path %></li>
+          </ul>
+        </li>
+        <% if logged_in? %>
+          <% if current_user.admin? %>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                  Meetings <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                  <li><%= link_to "List Meetings", meetings_path %></li>
+                  <li><%= link_to "Add Meeting", new_meeting_path %></li>
+              </ul>
+            </li>
+          <% else %>
+            <li><%= link_to "Meetings", meetings_path %></li>
+          <% end %>
+
+
+          <li><%= link_to "Users", users_path %></li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              Account <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+              <li><%= link_to "Profile", current_user %></li>
+              <li><%= link_to "Update My Details", edit_user_path(current_user) %></li>
+              <li class="divider"></li>
+              <li>
+                <%= link_to "Log out", logout_path, method: "delete" %>
+              </li>
+            </ul>
+          </li>
+        <% else %>
+          <li><%= link_to "Log in", login_path %></li>
+        <% end %>
+        <li><%= link_to "Contact", contact_path %></li>
+      </ul>
+    </nav>
+  </div>
+</header>

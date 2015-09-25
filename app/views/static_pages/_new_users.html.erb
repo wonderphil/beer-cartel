@@ -1,0 +1,16 @@
+<div class="boxed clearfix">
+	<h2>Latest to Join Beer Cartel</h2>
+	<ul class="no_dot">
+		<% @new_users.each do |nu| %>
+		<li class="home_3_block">
+			<%= link_to gravatar_for(nu, size: 80), nu %>
+			<span class="user-details">
+				<p><%= nu.first_name  %> <%= nu.last_name  %></br>
+			   		Favourite beer: <%= nu.favourite  %></br>
+			   		Joined <%= time_ago_in_words(nu.activated_at) %>  ago.
+			 	</p>
+			</span>
+		</li>
+		<% end %>
+	</ul>
+</div>

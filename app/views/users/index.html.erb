@@ -1,0 +1,50 @@
+<% provide(:title, 'All users') %>
+<div class="boxed">
+  <h1>All users</h1>
+
+  <%= will_paginate %>
+  <table  class="table table-striped">
+    <tr class="wrapword">
+      <th></th>
+      <th>First Name</th>
+      <th>Last Name</th>
+      <th>City</th>
+      <th>Joined on</th>
+      <th>
+        <% if logged_in?  %>
+        Admin
+        <%end %>
+      </th>
+    </tr>
+    <% @users.each do |u| %>
+      <% if !u.activated_at.blank? %>
+      <tr class="wrapword">
+        <td><%= gravatar_for u, size: 50 %></td>
+        <td><%= link_to u.first_name, (user_path, html_options = {:action => 'show', :id => u.id}) %></td>
+        <td><%= u.last_name %></td>
+        <% if u.city.blank? %>
+        <td></td>
+        <% else %>
+        <td><%= u.city %></td>
+        <% end %>
+        <td><%= u.activated_at.strftime("%B %d, %Y") %></td>
+        <td>
+          <% if logged_in? %>
+            <% if current_user.admin? && current_user?(u) %>
+              <%= link_to "Edit", edit_user_path(u), class: "btn btn-primary btn-xs" %>
+            <% end %>
+            <% if current_user.admin? && !current_user?(u) %>
+                <%= link_to "delete", u, method: :delete, data: { confirm: "You sure?" }, class: "btn btn-danger btn-xs" %>
+            <% end %>     
+          <% end %>
+        </td>
+      </tr>
+      <% end %>
+    <% end %>
+  </table>
+  <%= will_paginate %>
+</div>
+
+
+
+

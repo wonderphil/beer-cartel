@@ -1,0 +1,29 @@
+<% provide(:title, 'All Beer Meetings') %>
+<div class="boxed">
+  <h1>All Beer Cartel Meetings</h1>
+  <%= will_paginate %>
+  <table  class="table table-striped">
+    <tr class="wrapword">
+      <th>Date</th>
+      <th>Comments</th>
+      <% if logged_in? && current_user.admin?  %>
+        <th>
+          Admin
+        </th>
+      <% end %>
+    </tr>
+    <% @meetings.each do |m| %>
+      <tr class="wrapword">
+        <td><%= link_to m.date, (meeting_path, html_options = {:action => 'show', :id => m.id}) %></td>
+        <td><%= m.comments %></td>
+        <% if logged_in? && current_user.admin?  %>
+          <td>
+            <%= link_to "Edit", edit_meeting_path(m), class: "btn btn-primary btn-xs" %>
+            <%= link_to "delete", m, method: :delete, data: { confirm: "You sure?" }, class: "btn btn-danger btn-xs" %>
+          </td>
+        <% end %>
+      </tr>
+    <% end %>
+  </table>
+  <%= will_paginate %>
+</div>

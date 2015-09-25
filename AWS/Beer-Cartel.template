@@ -1,0 +1,166 @@
+{
+  "AWSTemplateFormatVersion" : "2010-09-09",
+
+  "Description" : "Create ec2 ubuntu instance with rails, rbenv, elastic search, unicorn and nginx. Using as a basis http://theflyingdeveloper.com/server-setup-ubuntu-nginx-unicorn-capistrano-postgres/",
+
+  "Parameters" : {
+    "KeyName": {
+      "Description" : "Name of an existing EC2 KeyPair to enable SSH access to the instance",
+      "Type": "AWS::EC2::KeyPair::KeyName",
+      "ConstraintDescription" : "must be the name of an existing EC2 KeyPair."
+    },
+
+    "InstanceType" : {
+      "Description" : "WebServer EC2 instance type",
+      "Type" : "String",
+      "Default" : "t2.large",
+      "AllowedValues" : [ "t1.micro", "t2.micro", "t2.large", "t2.small", "t2.medium", "m1.small", "m1.medium", "m1.large", "m1.xlarge", "m2.xlarge", "m2.2xlarge", "m2.4xlarge", "m3.medium", "m3.large", "m3.xlarge", "m3.2xlarge", "c1.medium", "c1.xlarge", "c3.large", "c3.xlarge", "c3.2xlarge", "c3.4xlarge", "c3.8xlarge", "g2.2xlarge", "r3.large", "r3.xlarge", "r3.2xlarge", "r3.4xlarge", "r3.8xlarge", "i2.xlarge", "i2.2xlarge", "i2.4xlarge", "i2.8xlarge", "hi1.4xlarge", "hs1.8xlarge", "cr1.8xlarge", "cc2.8xlarge", "cg1.4xlarge"],
+      "ConstraintDescription" : "must be a valid EC2 instance type."
+    },
+    "PublicKey" : {
+      "Description" : "Public key for github",
+      "Type" : "String",
+      "NoEcho" : "true"
+    },
+    "PrivateKey" : {
+      "Description" : "private key for github",
+      "Type" : "String",
+      "NoEcho" : "true"
+    },
+    "RubyVersion" : {
+      "Description" : "Version number of Ruby you wish to be installed",
+      "Type" : "String",
+      "Default" : "2.2.2"
+    },
+    "Subnet" : {
+      "Description" : "Subent ID",
+      "Type" : "AWS::EC2::Subnet::Id"
+    },
+    "Owner" : {
+      "Type" : "String",
+      "Description" : "Owning Team",
+      "Default" : "DevOps"
+    },
+    "Project" : {
+      "Type" : "String",
+      "Description" : "Required to trace billing",
+      "Default" : "DevOps"
+    },
+    "Stream" : {
+      "Type" : "String",
+      "Description" : "Required to trace billing",
+      "Default" : "DevOps"
+    },
+    "Name" : {
+      "Type" : "String",
+      "Description" : "Name of server",
+      "Default" : "beer1"
+    },
+    "VPC" : {
+      "Type" : "AWS::EC2::VPC::Id",
+      "Description" : "VPC to use"
+    },
+    "DNSZONE" : {
+      "Type" : "AWS::Route53::HostedZone::Id",
+      "Description" : "Zone to put dns"
+    },
+    "DNSName" : {
+      "Type" : "String",
+      "Description" : "DNS name to call webpage"
+    }
+  },
+
+  "Resources" : {
+    "RailsServer" : {
+      "Type" : "AWS::EC2::Instance",
+      "Metadata" : { 
+      },
+      "Properties": { 
+        "ImageId" : "ami-69631053",
+        "InstanceType" : { "Ref" : "InstanceType" },
+        "SecurityGroupIds" : [ { "Ref" : "InstanceSecurityGroup" } ],
+        "KeyName"        : { "Ref" : "KeyName" },
+        "SubnetId" : { "Ref" : "Subnet" },
+        "Tags" : [
+          { "Key" : "Owner",       "Value" : { "Ref" : "Owner" } },
+          { "Key" : "Project",     "Value" : { "Ref" : "Project" } },
+          { "Key" : "Stream",      "Value" : { "Ref" : "Stream" } },
+          { "Key" : "Name",        "Value" : { "Ref" : "Name" } }
+        ],
+        "UserData"       : { "Fn::Base64" : { "Fn::Join" : ["", [ 
+          "#!/bin/bash\n",
+          "apt-get update -y\n",
+          "apt-get install curl git nginx build-essential libpq-dev libffi-dev libssl-dev libreadline-dev zlib1g-dev openjdk-7-jre-headless -y\n",
+          "sudo -i -u ubuntu wget -O /home/ubuntu/elasticsearch-1.4.2.deb https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.4.2.deb\n",
+          "dpkg -i /home/ubuntu/elasticsearch-1.4.2.deb\n",
+          "sudo /etc/init.d/elasticsearch start\n",
+          "update-rc.d elasticsearch defaults 95 10\n",
+          "sudo -u ubuntu echo '", { "Ref" : "PublicKey" }, "' >> /home/ubuntu/.ssh/authorized_keys\n",
+          "sudo -u ubuntu echo '", { "Ref" : "PrivateKey" }, "' >> /home/ubuntu/.ssh/id_rsa\n",
+          "sudo -u chmod 600 /home/ubuntu/.ssh/id_rsa\n",
+          "echo \"127.0.0.1 `hostname`\" >> /etc/hosts\n",
+          "groupadd deployers\n",
+          "usermod -a -G deployers ubuntu\n",
+          "#echo '%deployers ALL=(ALL) ALL' >> /etc/sudoers\n",
+          "mkdir /etc/nginx/ssl\n",
+          "chgrp deployers /etc/nginx/sites-enabled\n",
+          "chmod g+w /etc/nginx/sites-enabled\n",
+          "chgrp deployers /etc/init.d\n",
+          "chmod g+w /etc/init.d\n",
+          "sudo -i -u ubuntu git clone https://github.com/sstephenson/rbenv.git /home/ubuntu/.rbenv\n",
+          "sudo -i -u ubuntu git clone https://github.com/sstephenson/ruby-build.git /home/ubuntu/.rbenv/plugins/ruby-build\n",
+          "sudo -i -u ubuntu echo 'export PATH=\"$HOME/.rbenv/bin:$PATH\"' >> /home/ubuntu/.bash_profile\n",
+          "sudo -i -u ubuntu echo 'eval \"$(rbenv init -)\"' >> /home/ubuntu/.bash_profile\n",
+          "chown -R ubuntu:ubuntu /home/ubuntu/.bash_profile\n",
+          "chown -R ubuntu:ubuntu /home/ubuntu/.rbenv/\n",
+          "sudo -i -u ubuntu rbenv install ", { "Ref" : "RubyVersion" }, "\n",
+          "sudo -i -u ubuntu rbenv global 2.2.2\n",
+          "sudo -i -u ubuntu rbenv rehash\n",
+          "sudo -i -u ubuntu gem install bundler\n",
+          "sudo -i -u ubuntu gem install rails --no-ri --no-rdoc\n",
+          "sudo -i -u ubuntu mkdir /home/ubuntu/apps\n",
+          "apt-get install -y ImageMagick\n",
+          "apt-get install snmp snmp-mibs-downloader\n",
+          "echo 'view systemview included .1' >> /etc/snmp/snmpd.conf\n",
+          "echo 'rocommunity pBOnHhJKffaIUmV4M6lk' >> /etc/snmp/snmpd.conf\n",
+          "service snmpd restart\n",
+          "cfn-signal -e 0 -r \"Rails Setup Complete\" '", { "Ref" : "WaitHandle" }, "'\n"
+
+        ] ] } }
+        }
+      },      
+      "WaitHandle" : {
+        "Type" : "AWS::CloudFormation::WaitConditionHandle"
+      },
+      "WaitCondition" : {
+        "Type" : "AWS::CloudFormation::WaitCondition",
+        "DependsOn" : "RailsServer",
+        "Properties" : {
+          "Handle" : {"Ref" : "WaitHandle"},
+          "Timeout" : "300"
+      },
+      "Type" : "AWS::Route53::RecordSet",
+        "Properties" : {
+          "Name" : { "Ref" : "DNSName" }, 
+          "HostedZoneId" : { "Ref" : "DNSZONE" },
+          "Type" : "A",
+          "TTL" : "300",
+          "ResourceRecords" : [
+          { "Fn::GetAtt" : [ "RailsServer", "PrivateIp" ]}
+          ]
+        }
+    },
+
+    "InstanceSecurityGroup" : {
+      "Type" : "AWS::EC2::SecurityGroup",
+      "Properties" : {
+        "VpcId" : { "Ref" : "VPC" },
+        "GroupDescription" : "Enable SSH access via port 22",
+        "SecurityGroupIngress" : [ { "IpProtocol" : "tcp", "FromPort" : "22", "ToPort" : "22", "CidrIp" : "0.0.0.0/0" },
+                                   { "IpProtocol" : "tcp", "FromPort" : "80", "ToPort" : "80", "CidrIp" : "0.0.0.0/0" },
+                                   { "IpProtocol" : "udp", "FromPort" : "161", "ToPort" : "161", "CidrIp" : "0.0.0.0/0" },
+                                   { "IpProtocol" : "tcp", "FromPort" : "9200", "ToPort" : "9200", "CidrIp" : "0.0.0.0/0" } ]
+      }
+    }
+  }
+}

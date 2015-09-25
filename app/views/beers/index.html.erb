@@ -1,0 +1,52 @@
+<% provide(:title, 'All Beers') %>
+<div class="boxed">
+  <h1>All Beers</h1>
+  <%= will_paginate %>
+  <table  class="table table-striped">
+    <tr class="wrapword">
+      <th></th>
+      <th>Beer</th>
+      <th>Style</th>
+      <th>Brewery</th>
+      <th>Alcohol Volume %</th>
+      <th>Drunk on</th>
+      <th>Rating</th>
+      <th>
+        <% if logged_in?  %>
+          Admin
+        <%end %>
+      </th>
+    </tr>
+    <% @beers.each do |b| %>
+      <tr class="wrapword">
+        <td><%= image_tag b.picture.url, :width => "75px", :hight => "90px" if b.picture? %></td>
+        <td><%= link_to b.name, (beer_path, html_options = {:action => 'show', :id => b.id}) %></td>
+        <td><%= b.style %></td>
+        <td><%= b.brewery %></td>
+        <td><%= b.alcohol %>%</td>
+        <% if b.drunk_on.blank? %>
+          <td>This sweet nectar has</br> yet to be tasted</td>
+        <% else %>
+          <td><%= b.drunk_on.strftime("%B %d, %Y") %></td>
+        <% end %>
+        <% if b.reviews.blank? %>
+          <td><div class="star-rating" data-score= '0' ></div></td>
+        <% else %>
+          <td>
+            <div class="star-rating" data-score= <%= b.reviews.average(:rating).round(2) %> ></div>
+            <%= "#{b.reviews.length} reviews" %>
+          </td>
+        <% end %>
+        <td>
+          <% if logged_in?  %>
+            <%= link_to "Edit", edit_beer_path(b), class: "btn btn-primary btn-xs" %>
+          <% if logged_in? && current_user.admin?  %>
+            <%= link_to "delete", b, method: :delete, data: { confirm: "You sure?" }, class: "btn btn-danger btn-xs" %>
+          <% end %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+  <%= will_paginate %>
+</div>

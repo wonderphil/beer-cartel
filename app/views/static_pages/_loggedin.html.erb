@@ -1,0 +1,20 @@
+<div class="boxed clearfix">
+	<h1>Next Beer Cartel Meetings</h1>
+	<% @home_meetings = Meeting.where("date >= ?", Date.today).order("created_at ASC") %>
+	<% if @home_meetings.any? %>
+		<ul class="no_dot">
+			<% @home_meetings.each do |m| %>
+				<li class="home_3_block no_dot">
+					<%= image_tag m.meeting_background.url, :class => "thumb" if m.meeting_background? %>
+					<span>
+						<p><%= link_to m.date, meeting_path(m) %></br>
+							<%= m.comments %>
+						</p>
+					</span>
+				</li>
+			<% end %>
+		</ul>
+	<% else %>
+		<center>No meetings comming up! <%= link_to "Setup a new meeting", new_meeting_path %></center>
+	<% end %>
+</div>

@@ -1,0 +1,15 @@
+vb:
+  name: VB
+  style: vb_style
+  brewery: vb_brew
+  description: vb_description
+  alcohol: 12.3
+
+
+carlton:
+  name: Carlton Draught
+  style: Carlton_style
+  brewery: Carlton_brew
+  description: Carlton_description
+  alcohol: 9.99
+

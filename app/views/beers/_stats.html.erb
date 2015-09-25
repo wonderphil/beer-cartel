@@ -1,0 +1,17 @@
+<div class="beer-stats">
+  <b>Style:</b> <%= @beer.style %></br>
+  <b>brewery:</b>
+  	<% if @beer.brewery_url? %>
+  		<%= link_to @beer.brewery, @beer.brewery_url, :target => "_blank" %></br>
+  	<% else %>	
+  		<%= @beer.brewery %></br>
+  	<% end %>
+  <b>Alcohol:</b> <%= @beer.alcohol %>%</br>
+  <% if @beer.drunk_on.blank? %>
+    <b>This sweet nectar has yet to be tasted</b></br>
+  <% else %>
+    <b>Drunk on:</b> <%= @beer.drunk_on.strftime("%B %d, %Y") %></br>
+  <% end %>
+  <b>Description:</b></br>
+  <%= @beer.description %>
+</div>

@@ -1,0 +1,86 @@
+<% provide(:title, "Meeting Details") %>
+<div class="boxed">
+  <div class="row">
+    <div class="col-md-16 beer-banner-container">
+      <% if @meeting.meeting_background.blank? %>
+        <%= image_tag "Beer_banner.jpg", class: "beer_banner"  %></br>
+        <small><%= link_to "Upload a beer banner for this meeting", edit_meeting_path %></small>
+      <% else %>
+        <%= image_tag @meeting.meeting_background.url, class: "beer_banner"  %>
+      <% end %> 
+    </div>
+    <aside class="col-md-3">
+      <section class="meeting_info">
+        <h1>
+            <%= @meeting.date %>
+        </h1>
+     	  <small>
+     	  <%= link_to "Update", edit_meeting_path, class: "btn btn-primary btn-xs" %>
+        </small></br></br>
+      </section>
+      <% if @meeting.users.any? %>
+        <section class="meeting_stats">
+          <h3>Users:</h3>
+          <% @meeting.users.each do |u| %>
+            <p>
+              <%= link_to gravatar_for(u, size: 30), u %>
+            </p>
+          <% end %>
+        </section>
+      <% end %>
+    </aside>
+    <div class="col-md-8 details-sizing">
+      <h3>Meeting Details:</h3>
+        <p>
+         <%= @meeting.comments %>
+        </p>
+      <% if @meeting.beers.any? %>
+        <h3>Beers:</h3>
+          <table class="tg">
+            <% @meeting.beers.each do |b| %>
+              <tr>
+                <th class="tg-031e" rowspan="6">
+                  <% if b.picture.blank? %>
+                    <%= image_tag "no-beer-label.jpg" %></br>No photo uploaded!
+                  <% else %>
+                    <%= image_tag  b.picture.url %>
+                  <% end %>
+                </th>
+                <th class="tg-hgcj">Name</th>
+                <th class="tg-hgcj">Alcohol</th>
+                <th class="tg-hgcj">Style</th>
+                <th class="tg-hgcj"># Reviews</th>
+              </tr>
+              <tr>
+                <td class="tg-031e"><%= b.name %></td>
+                <td class="tg-031e"><%= b.alcohol %>%</td>
+                <td class="tg-031e"><%= b.style %></td>
+                <td class="tg-031e"><%= b.reviews.count() %></td>
+              </tr>
+              <tr>
+                <td class="tg-hgcj" colspan="2">Brewery</td>
+                <td class="tg-hgcj" colspan="2">Profile</td>
+              </tr>
+              <tr>
+                <td class="tg-031e" colspan="2"><%= link_to b.brewery, b.brewery_url, :target => "_blank" %></td>
+                <td class="tg-031e" colspan="2"><%= link_to "See Beer Profile", beer_path(b) %></td>
+              </tr>
+              <tr>
+                <td class="tg-hgcj" colspan="4">Description</td>
+              </tr>
+              <tr>
+                <td class="tg-031e" colspan="4">
+                  <% if b.description.length() > 250 %>
+                    <%= b.description.first(250) %> ....<%= link_to "See more", beer_path(b) %>
+                  <% else %>
+                    <%= b.description %>
+                  <% end %>
+                </td>
+
+              </tr>
+            <% end %>  
+          </table>   
+      <% end %>
+  </div>
+</div>
+

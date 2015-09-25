@@ -1,0 +1,14 @@
+<%= render 'shared/error_messages', object: f.object %>
+
+<fieldset>
+	<legend>Review</legend>
+
+	<div id="star-rating"></div>
+
+	<%= f.label :comment, "Review" %>
+	<%= f.text_area :comment, class: 'form-control' %>
+
+</fieldset>
+
+
+

@@ -1,0 +1,522 @@
+@import "bootstrap-sprockets";
+@import "bootstrap";
+
+/* carousel */
+
+#owl-beer .item{
+  
+  padding: 10px 0px;
+  margin: 10px;
+  color: #FFF;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  text-align: center;
+
+}
+#owl-beer .item img{
+  display: block;
+  width: 300px;
+
+}
+
+
+/* mixins, variables, etc. */
+
+$gray-medium-light: #eaeaea;
+
+@mixin box_sizing {
+  -moz-box-sizing:    border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing:         border-box;
+}
+
+/* universal */
+
+body {
+  padding-top: 60px;
+  background: #eee;
+
+}
+
+.body_bg_img {
+    position: fixed;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+}
+.body_bg_img img {
+    min-width: 100%;
+    min-height: 100%;
+    vertical-align: middle;
+    -ms-interpolation-mode: bicubic;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+}
+
+section {
+  overflow: auto;
+}
+
+textarea {
+  resize: vertical;
+}
+
+.center {
+  text-align: center;
+  h1 {
+    margin-bottom: 60px;
+  }
+}
+.boxed {
+  background-color: #F0F8FF;
+  opacity: 0.9;
+  padding: 30px;
+  margin-bottom: 30px;
+  color: inherit;
+}
+.jumbotron {
+  background-color: #fff;
+}
+
+.front_page_container {
+  padding-top: 10px;
+}
+
+.padding {
+  padding: 10px;
+}
+
+
+/* typography */
+
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1;
+}
+
+h1 {
+  font-size: 3em;
+  letter-spacing: -2px;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+h2 {
+  font-size: 1.9em;
+  letter-spacing: -1px;
+  margin-bottom: 30px;
+  text-align: center;
+  font-weight: normal;
+}
+
+p {
+  font-size: 1.1em;
+  line-height: 1.7em;
+}
+
+/* header */
+
+#logo {
+  float: left;
+  margin-right: 10px;
+  font-size: 1.7em;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: -1px;
+  padding-top: 9px;
+  font-weight: bold;
+  &:hover {
+    color: white;
+    text-decoration: none;
+  }
+}
+
+.navbar-inverse {
+  background-color: #2c559c;
+
+}
+
+.navbar-inverse .navbar-nav > li > a {
+    color: #06c;
+}
+
+.navbar-inverse .navbar-nav > .open > a:hover {
+  background-color: #06c;
+}
+
+.navbar-inverse .navbar-nav > li > a {
+  color: #fff;
+}
+.navbar-inverse .navbar-nav > .open > a:focus {
+    background-color: #06c;
+    
+}
+
+/* footer */
+
+footer {
+  margin-top: 45px;
+  padding-top: 5px;
+  border-top: 1px solid $gray-medium-light;
+  color: $gray-light;
+  a {
+    color: $gray;
+    &:hover {
+      color: $gray-darker;
+    }
+  }
+  small {
+    float: left;
+  }
+  ul {
+    float: right;
+    list-style: none;
+    li {
+      float: left;
+      margin-left: 15px;
+    }
+  }
+}
+
+/* miscellaneous */
+
+.debug_dump {
+  clear: both;
+  float: left;
+  width: 100%;
+  margin-top: 45px;
+  @include box_sizing;
+}
+
+/* sidebar */
+
+aside {
+  section.user_info {
+    margin-top: 20px;
+  }
+  section.beer_info {
+    margin-top: 20px;
+  }
+  section {
+    padding: 10px 0;
+    margin-top: 20px;
+    &:first-child {
+      border: 0;
+      padding-top: 0;
+    }
+    span {
+      display: block;
+      margin-bottom: 3px;
+      line-height: 1;
+    }
+    h1 {
+      font-size: 1.4em;
+      text-align: left;
+      letter-spacing: -1px;
+      margin-bottom: 3px;
+      margin-top: 0px;
+    }
+  }
+}
+
+.gravatar {
+  float: left;
+  margin-right: 10px;
+}
+
+.gravatar_edit {
+  margin-top: 15px;
+}
+
+.stats {
+  overflow: auto;
+  margin-top: 0;
+  padding: 0;
+  a {
+    float: left;
+    padding: 0 10px;
+    border-left: 1px solid $gray-lighter;
+    color: gray;
+    &:first-child {
+      padding-left: 0;
+      border: 0;
+    }
+    &:hover {
+      text-decoration: none;
+      color: blue;
+    }
+  }
+  strong {
+    display: block;
+  }
+}
+
+.meeting_stats {
+  overflow: auto;
+  margin-top: 0;
+  padding: 1px;
+  a {
+    float: left;
+    padding: 0 10px;
+    border-left: 1px solid $gray-lighter;
+    color: gray;
+    &:first-child {
+      padding: 1px;
+      border: 0;
+    }
+    &:hover {
+      text-decoration: none;
+      color: blue;
+    }
+  }
+  strong {
+    display: block;
+  }
+}
+
+.beer-stats {
+  overflow: auto;
+  margin-top: 0;
+  padding: 0;
+  strong {
+    display: block;
+  }
+}
+
+.user_avatars {
+  overflow: auto;
+  margin-top: 10px;
+  .gravatar {
+    margin: 1px 1px;
+  }
+  a {
+    padding: 0;
+  }
+}
+
+.users.follow {
+  padding: 0;
+}
+
+/* Meeting display */
+
+.beer-banner-container {
+  height: 200px;
+  overflow: hidden;
+    display: table;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.beer_banner {
+    width: 100%;
+  }
+
+.tg {
+  border-collapse:collapse;
+  border-spacing:0;
+  border-color:#ccc;
+  width: 100%;
+}
+.tg td {
+  font-family:Arial, sans-serif;
+  font-size:14px;
+  padding:8px 20px;
+  border-style:solid;
+  border-width:1px;
+  overflow:hidden;
+  word-break:normal;
+  border-color:#ccc;
+  color:#333;
+  background-color:#fff;
+}
+.tg th img {
+  width: auto;
+  height: 65%;
+  text-align: center;
+}
+
+.tg th {
+  font-family:Arial, sans-serif;
+  font-size:14px;
+  font-weight:normal;
+  padding:8px 20px;
+  border-style:solid;
+  border-width:1px;
+  overflow:hidden;
+  word-break:normal;
+  border-color:#ccc;
+  color:#333;
+  background-color:#f0f0f0;
+}
+.tg .tg-hgcj {
+  font-weight:bold;
+  text-align:center
+}
+
+.details-sizing {
+  width: 75%;
+}
+
+
+
+
+
+/* forms */
+
+input, textarea, select, .uneditable-input {
+  border: 1px solid #bbb;
+  
+  margin-bottom: 15px;
+  @include box_sizing;
+}
+select, .full_size_input {
+  width: 100%;
+  border: 1px solid #bbb;
+  margin-bottom: 15px;
+  @include box_sizing;
+}
+
+input {
+  height: auto !important;
+  border: 0px;
+}
+
+#error_explanation {
+  color: red;
+  ul {
+    color: red;
+    margin: 0 0 30px 0;
+  }
+}
+
+.field_with_errors {
+  @extend .has-error;
+  .form-control {
+    color: $state-danger-text;
+  }
+}
+
+.checkbox {
+  margin-top: -10px;
+  margin-bottom: 10px;
+  span {
+    margin-left: 20px;
+    font-weight: normal;
+  }
+}
+
+#session_remember_me {
+  width: auto;
+  margin-left: 0;
+}
+
+/* Users index */
+
+.users {
+  list-style: none;
+  margin: 0;
+  li {
+    overflow: auto;
+    padding: 10px 0;
+    border-bottom: 1px solid $gray-lighter;
+  }
+}
+/* Beers index */
+.beers {
+  list-style: none;
+  margin: 0;
+  li {
+    overflow: auto;
+    padding: 10px 0;
+    border-bottom: 1px solid $gray-lighter;
+  }
+}
+
+.scroll_container {
+  border: 2px solid #ccc;
+  padding: 5px;
+  width: 100%; 
+  height: 120px; 
+  overflow-y: scroll;
+}
+
+/* reviews */
+
+.reviews {
+  list-style: none;
+  padding: 0;
+  li {
+    padding: 10px 0;
+    border-top: 1px solid #e8e8e8;
+  }
+  .user {
+    margin-top: 5em;
+    padding-top: 0;
+  }
+  .comment {
+    display: block;
+    margin-left: 60px;
+    img {
+      display: block;
+      padding: 5px 0;
+    }
+  }
+  .timestamp {
+    color: $gray-light;
+    display: block;
+    margin-left: 60px;
+  }
+  .actions {
+    display: block;
+    margin-left: 60px;
+  }
+  .gravatar {
+    float: left;
+    margin-right: 10px;
+    margin-top: 5px;
+  }
+}
+
+.no_dot {
+  list-style-type: none;
+}
+
+.thumb {
+  width: 100px;
+  float: left;
+  margin-right: 10px;
+}
+
+.stars {
+  margin-left: 60px;
+}
+
+.aside {
+  textarea {
+    height: 100px;
+    margin-bottom: 5px;
+  }
+}
+
+.span.picture {
+  margin-top: 10px;
+  input {
+    border: 0;
+  }
+}
+
+.home_3_block {
+  float:left;
+  width:33.3%
+}
+
+.home_3_block:nth-child(3n+1) {
+  clear:left;
+}

@@ -1,0 +1,16 @@
+<li id="review-<%= review.id %>">
+  <%= link_to gravatar_for(review.user, size: 50), review.user %>
+  <span class="comment">
+    <p><%= h(review.comment).gsub(/\n/, '<br/>').html_safe %></p>
+  </span>
+  <div class="star-rating stars" data-score= <%= review.rating %>></div>
+  <span class="timestamp">
+    Posted by <%= review.user.first_name %>, <%= time_ago_in_words(review.created_at) %> ago.
+  </span>
+  <span class="actions">
+ 	<% if current_user?(review.user) %>
+    	<%= link_to "Edit", edit_beer_review_path(@beer, review), class: "btn btn-primary btn-xs" %> 
+    	<%= link_to "Delete", beer_review_path(@beer, review), method: :delete, class: "btn btn-danger btn-xs" %>
+  	<% end %>
+  </span>
+</li>

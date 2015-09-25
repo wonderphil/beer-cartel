@@ -1,0 +1,26 @@
+<% provide(:title, "Home") %>
+
+<% if logged_in? %>
+	<%= render 'loggedin' %>
+<% else %>
+
+<div class="center jumbotron">
+  <h1>Welcome to the Beer Cartel</h1>
+  <%= link_to "Join now!", signup_path, class: "btn btn-lg btn-primary" %>
+</div>
+<% end %>
+
+<div class="home-reviews">
+	<%= render 'lastest_review' %>	
+</div>
+
+<% @new_users = User.where(:activated_at => 5.days.ago..Time.now).limit(10) %>
+<% if @new_users.any? %>
+	<div class="home-users">
+		<%= render 'new_users' %>
+	</div>
+<% end %>
+
+<div>	
+	<%= render 'layouts/beer_carousel' %>
+</div>

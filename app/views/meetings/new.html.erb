@@ -1,0 +1,14 @@
+<% provide(:title, 'Book a Meeting') %>
+<div class="boxed">
+	<h1>Meeting Booking</h1>
+	<div class="row">
+	  <div class="col-md-6 col-md-offset-3">
+	    <%= form_for(@meeting, html: { multipart: true }) do |f| %>
+	      <%= render 'fields', f: f %>
+	      
+	      <%= f.submit "Book Meeting", class: "btn btn-primary" %>
+	      <%= link_to 'Cancel', meetings_path, class: "btn btn-danger" %>
+	    <% end %>
+	  </div>
+	</div>
+</div>

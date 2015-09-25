@@ -1,0 +1,23 @@
+<div class="boxed">
+  <h2>Latest Beers added to our list</h2>
+  <div id="owl-beer" class="owl-carousel">
+    <% @beers = Beer.all.order("RANDOM()").limit(6) %>
+    <% @beers.each do |p| %>
+      <div class="item"> <%= link_to (image_tag p.picture.url, data: { src: p.picture.url }, :class => "lazyOwl"), beer_path(p.id) if p.picture? %></div>
+    <% end %>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function() {
+    $("#owl-beer").owlCarousel({
+      items : 3,
+      lazyLoad : true,
+      navigation : true,
+      autoPlay : 3500,
+      stopOnHover : true,
+      navigation : false,
+      pagination : false
+    }); 
+  });
+</script>

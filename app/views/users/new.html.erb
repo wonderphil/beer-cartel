@@ -1,0 +1,25 @@
+<% provide(:title, 'Sign up') %>
+<div class="boxed">
+	<h1>Sign up</h1>
+
+	<div class="row">
+	  <div class="col-md-6 col-md-offset-3">
+	    <%= form_for(@user) do |f| %>
+	      <%= render 'fields', f: f %>
+	      
+	      <%= f.submit "Create my account", class: "btn btn-primary" %>
+	      <%= link_to 'Cancel', users_path, class: "btn btn-danger" %>
+	    <% end %>
+	    <hr>
+	    <i>
+	    	<h5>Privacy Policy</h5>
+	    	<p>Beer Cartel, Inc would like to inform you of our policies regarding the collection, use and disclosure of Personal Information we receive from users of this Site.
+	    	We will use this information in any way possible to make us more money for drinking amazing beers.  While using our Site, we may ask you to provide us with certain
+	    	personally identifiable information that can be used to hunt you down and make you drink with us. We should also say that we practice responsible service of alcohol
+	    	which may include but not limited to, drinking of amazing looking beers but not amazing tasting, drinking amazing tasting but not amazing looking beers, and on some
+	    	occasions drinking some of the best scotch that your money will buy us.<br>
+	    	You do not require to be 18 to join this site!
+	    </i>
+	  </div>
+	</div>
+</div>

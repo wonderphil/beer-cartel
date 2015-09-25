@@ -1,0 +1,4 @@
+<h1><%= @user.first_name %> <%= @user.last_name %></h1>
+Member since: <%= time_ago_in_words(@user.activated_at) %> ago.<p>
+# of reviews: <%= @user.reviews.length %><p>
+Favourite Beer: <%= @user.favourite %> 

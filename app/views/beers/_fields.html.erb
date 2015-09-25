@@ -1,0 +1,40 @@
+<%= render 'shared/error_messages', object: f.object %>
+
+<fieldset>
+	<legend>Beer Details</legend>
+
+	<%= f.label :name, "Beers Name" %>
+	<%= f.text_field :name, class: 'form-control' %>
+
+	<%= f.label :style, "Style of Beer" %>
+	<%= f.text_field :style, class: 'form-control' %>
+
+	<%= f.label :brewery, "Brewery" %>
+	<%= f.text_field :brewery, class: 'form-control' %>
+
+	<%= f.label :brewery_url, "Brewery Website" %>
+	<%= f.url_field :brewery_url, class: 'form-control', :placeholder => "http://....." %>
+
+	<%= f.label :alcohol, "Alcohol Volume" %>
+	<%= f.number_field :alcohol, :class => 'text_field full_size_input', :step => 'any', :placeholder => "4.51" %>
+
+	<%= f.label :drunk_on, "Date of which beer was consumed by Beer Club" %>
+	<%= f.date_select :drunk_on, :start_year => 2014, :include_blank => true, class: 'form-control' %>
+
+	<%= f.label :description, "Description" %>
+	<%= f.text_area :description, class: 'form-control' %>
+
+	<span class="picture">
+		<%= hidden_field_tag :picture, nil %>
+    	<%= f.file_field :picture, accept: 'image/jpeg,image/gif,image/png' %>
+  	</span>
+</fieldset>
+
+<script type="text/javascript">
+  $('#beer_picture').bind('change', function() {
+    var size_in_megabytes = this.files[0].size/1024/1024;
+    if (size_in_megabytes > 5) {
+      alert('Maximum file size is 5MB. Please choose a smaller file.');
+    }
+  });
+</script>
